@@ -1,0 +1,3 @@
+https://fastly.cdn.openbsd.org/pub/OpenBSD
+https://mirror.leaseweb.com/pub/OpenBSD
+https://cloudflare.cdn.openbsd.org/pub/OpenBSD

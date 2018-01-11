@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+for i in $(sort -R /var/www/htdocs/cdn.index.txt); do
+    ftp -w 5 -MVo /dev/zero $i/timestamp && echo $i
+done > /var/www/htdocs/index.txt.tmp
+
+if [ "$(sort /var/www/htdocs/index.txt.tmp)" != "$(sort /var/www/htdocs/index.txt)" ]; then
+    mv /var/www/htdocs/index.txt.tmp /var/www/htdocs/index.txt
+    pkill -SIGHUP kfcgi
+fi

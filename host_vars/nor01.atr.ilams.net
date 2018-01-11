@@ -1,0 +1,9 @@
+atr_bgp:
+  upstream: nordunet
+  neighbors:
+    - asn: 2603
+      ip: 109.105.96.1
+      multihop: 10
+    - asn: 2603
+      ip: 2001:948:0:bad:c0de::1
+      multihop: 10

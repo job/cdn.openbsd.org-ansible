@@ -1,0 +1,56 @@
+server "cdn.openbsd.org" {
+        listen on * port 80
+        listen on :: port 80
+
+        location "/.well-known/acme-challenge/*" {
+{% if inventory_hostname == "ams01.atr.ilams.net" %}
+                root "/acme"
+                root strip 2
+{% else %}
+                block return 301 "http://ams01.atr.ilams.net$REQUEST_URI"
+{% endif %}
+        }
+        location "/*" {
+                block return 301 "https://cdn.openbsd.org$REQUEST_URI"
+        }
+}
+
+server "cdn.openbsd.org" {
+        listen on * tls port 443
+        listen on :: tls port 443
+
+        tls certificate "/etc/ssl/cdn.openbsd.org.fullchain.pem"
+        tls key "/etc/ssl/private/cdn.openbsd.org.key"
+
+        log {
+                access "secure-access.log"
+                error "secure-error.log"
+        }
+
+        location "/.well-known/acme-challenge/*" {
+{% if inventory_hostname == "ams01.atr.ilams.net" %}
+                root "/acme"
+                root strip 2
+{% else %}
+                block return 301 "https://ams01.atr.ilams.net$REQUEST_URI"
+{% endif %}
+        }
+
+        connection { max requests 500, timeout 3600 }
+
+        location "/" {
+            directory index index.txt
+            root "/htdocs"
+        }
+
+        location "/pub/OpenBSD" {
+                root strip 2
+                fastcgi socket "/run/httpd.sock"
+                root "/"
+        }
+        location "/pub/OpenBSD/*" {
+                root strip 2
+                fastcgi socket "/run/httpd.sock"
+                root "/"
+        }
+}

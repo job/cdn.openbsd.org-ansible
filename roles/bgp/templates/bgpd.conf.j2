@@ -1,0 +1,35 @@
+AS 15562
+router-id {{ ansible_default_ipv4['address'] }}
+
+listen on 127.0.0.1
+listen on ::1
+
+{% for net in bgp_networks|default([]) %}
+network {{ net }}
+{% endfor %}
+
+{% for neighbor in atr_bgp['neighbors'] %}
+neighbor {{ neighbor['ip'] }} {
+{% if neighbor['multihop']|default(0) > 0 %}
+	multihop {{ neighbor['multihop'] }}
+{% endif %}
+	remote-as {{ neighbor['asn'] }}
+	announce self
+}
+{% endfor %}
+
+deny from any
+
+{# since coloclue isnt a global network, dont announce to global peers #}
+{% if atr_bgp['upstream'] == "coloclue" %}
+match to any set { \
+    large-community 8283:4:3356 \
+    large-community 8283:4:1299 \
+    large-community 8283:4:6453 \
+    large-community 8283:4:6939 \
+}
+{% elif atr_bgp['upstream'] == "ntt" %}
+match to any set { \
+    community 65520:2201 \
+}
+{% endif %}

@@ -1,0 +1,8 @@
+- name: reload bgpd
+  service: name=bgpd state=reloaded
+
+- name: restart bgpd
+  service: name=bgpd state=restarted
+
+- name: restart hostname.lo1
+  shell: /bin/sh /etc/netstart lo1

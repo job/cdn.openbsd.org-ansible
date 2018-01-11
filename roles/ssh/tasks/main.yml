@@ -1,0 +1,17 @@
+- name: copy ssh keys
+  copy:
+    src=keys
+    dest=/root/.ssh/authorized_keys
+    owner=root
+    group=wheel
+    mode=0600
+
+- name: copy sshd_config
+  copy:
+    src=sshd_config
+    dest=/etc/ssh/sshd_config
+    owner=root
+    group=wheel
+    mode=0644
+  notify:
+    - reload sshd

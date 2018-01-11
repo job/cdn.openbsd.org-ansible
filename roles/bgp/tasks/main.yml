@@ -1,0 +1,22 @@
+- name: Copy across bgpd config
+  template:
+    src: templates/bgpd.conf.j2
+    dest: /etc/bgpd.conf
+    owner: root
+    group: wheel
+    mode: 0600
+    validate: /usr/sbin/bgpd -n -f %s
+    backup: yes
+  notify:
+    - reload bgpd
+
+- name: Create dummy interface
+  template:
+    src: templates/hostname.lo1.j2
+    dest: /etc/hostname.lo1
+    mode: 0640
+  notify:
+    - restart hostname.lo1
+
+- name: "ensure bgpd started"
+  service: name=bgpd enabled=yes state=started

@@ -1,0 +1,88 @@
+- name: slurp letsencrypt certs
+  slurp: src={{ item }}
+  with_items:
+    - /etc/ssl/cdn.openbsd.org.crt
+    - /etc/ssl/cdn.openbsd.org.fullchain.pem
+    - /etc/ssl/private/cdn.openbsd.org.key
+  register: le_certs
+  run_once: true
+  when: inventory_hostname == "ams01.atr.ilams.net"
+
+- name: write out letencrypt certs
+  copy:
+    dest: "{{ item.item }}"
+    content: "{{ item.content | b64decode }}"
+    owner: root
+    group: wheel
+    mode: 0700
+  with_items:
+    - "{{ hostvars['ams01.atr.ilams.net']['le_certs'].results }}"
+  when: inventory_hostname != "ams01.atr.ilams.net"
+  no_log: True
+
+- name: "copy cdn index"
+  copy:
+    src: files/cdn.index.txt
+    dest: /var/www/htdocs/cdn.index.txt
+    owner: root
+    group: wheel
+
+- name: "copy redmirror binary"
+  copy:
+    src: files/redmirror
+    dest: /var/www/cgi-bin/redmirror
+    owner: root
+    group: wheel
+    mode: 0555
+  notify:
+    - reload kfcgi
+
+- name: "copy check_mirrors"
+  copy:
+    src: files/check_mirrors
+    dest: /usr/local/bin/check_mirrors
+    owner: root
+    group: wheel
+    mode: 0555
+
+- name: install kcgi
+  openbsd_pkg: name=kcgi state=latest
+
+- name: uninstall pkgs
+  openbsd_pkg: name={{ item }} state=absent
+  with_items:
+    - memcached-1.4.39
+    - libmemcached
+
+- name: "kfcgi rc file"
+  copy:
+    src: files/kfcgi.service
+    dest: /etc/rc.d/kfcgi
+    owner: root
+    group: wheel
+    mode: 0755
+  notify:
+    - restart kfcgi
+
+- name: cdn index shuffle job
+  cron:
+    name: "shuffle_cdns"
+    job: "/usr/local/bin/check_mirrors"
+
+- name: Copy across httpd config
+  template:
+    src: templates/httpd.conf.j2
+    dest: /etc/httpd.conf
+    owner: root
+    group: wheel
+    mode: 0600
+    validate: /usr/sbin/httpd -n -f %s
+    backup: yes
+  notify:
+    - restart httpd
+
+- name: "ensure kfcgi started"
+  service: name=kfcgi enabled=yes state=started
+
+- name: "ensure httpd started"
+  service: name=httpd enabled=yes state=started

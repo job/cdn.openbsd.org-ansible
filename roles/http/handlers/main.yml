@@ -1,0 +1,8 @@
+- name: reload kfcgi
+  service: name=kfcgi state=reloaded
+
+- name: restart kfcgi
+  service: name=kfcgi state=restarted
+
+- name: restart httpd
+  service: name=httpd state=restarted

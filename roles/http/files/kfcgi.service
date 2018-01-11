@@ -1,0 +1,9 @@
+#!/bin/sh
+
+daemon="kfcgi -v -U www -u www -- /cgi-bin/redmirror"
+
+. /etc/rc.d/rc.subr
+
+rc_reload=YES
+
+rc_cmd $1

@@ -1,0 +1,11 @@
+atr_bgp:
+  upstream: etheroute
+  neighbors:
+    - asn: 16089
+      ip: 194.0.58.93
+    - asn: 16089
+      ip: 194.0.58.94
+    - asn: 16089
+      ip: 2001:67c:3e0:859::2
+    - asn: 16089
+      ip: 2001:67c:3e0:859::3
