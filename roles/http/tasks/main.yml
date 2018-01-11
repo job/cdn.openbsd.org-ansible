@@ -48,12 +48,6 @@
 - name: install kcgi
   openbsd_pkg: name=kcgi state=latest
 
-- name: uninstall pkgs
-  openbsd_pkg: name={{ item }} state=absent
-  with_items:
-    - memcached-1.4.39
-    - libmemcached
-
 - name: "kfcgi rc file"
   copy:
     src: files/kfcgi.service
