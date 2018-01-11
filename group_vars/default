@@ -1,3 +1,6 @@
 ansible_user: root
 ansible_become_method: doas
 ansible_python_interpreter: /usr/local/bin/python
+bgp_networks:
+  - 67.221.245.0/24
+  - 2607:fae0:245::/48
