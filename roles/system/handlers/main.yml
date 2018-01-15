@@ -2,4 +2,4 @@
   service: name=ntpd state=restarted
 
 - name: reload pf
-  action: shell /sbin/pfctl -f /etc/pf.conf
+  shell: /sbin/pfctl -f /etc/pf.conf
