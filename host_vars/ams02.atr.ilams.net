@@ -5,3 +5,5 @@ atr_bgp:
       ip: 94.142.242.236
     - asn: 15562
       ip: 2a02:898:52:fffd::a
+interface:
+  ext: vio0

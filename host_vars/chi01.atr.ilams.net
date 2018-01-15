@@ -1,7 +1,0 @@
-atr_bgp:
-  upstream: ntt
-  neighbors:
-    - asn: 15562
-      ip: 165.254.255.161
-    - asn: 15562
-      ip: 2001:728:1808:4::1

@@ -1,0 +1,17 @@
+atr = "{{ "{ " }}{%- for i in bgp_networks -%}{{ i }}{{ " " }}{%- endfor -%} }"
+
+set block-policy drop
+set skip on lo
+
+block
+
+pass all flags S/SA
+pass in quick inet6 from fe80::/64
+
+pass in proto tcp from {{ munin['host'] }} to {{ interface['ext'] }} port 4949
+
+pass in proto tcp to {{ interface['ext'] }} port 22 # SSH
+pass in proto tcp to {{ interface['ext'] }} port 179 # BGP
+
+pass in proto tcp to $atr port 80  # HTTP
+pass in proto tcp to $atr port 443 # HTTPS

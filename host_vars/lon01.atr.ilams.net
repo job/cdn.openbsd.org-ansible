@@ -9,3 +9,5 @@ atr_bgp:
       ip: 2001:67c:3e0:859::2
     - asn: 16089
       ip: 2001:67c:3e0:859::3
+interface:
+  ext: vmx0

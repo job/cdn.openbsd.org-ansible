@@ -1,3 +1,14 @@
+- name: "upload pf rules"
+  template:
+    src: pf.conf.j2
+    dest: "/etc/pf.conf"
+    mode: 0600
+  notify:
+    - reload pf
+
+- name: ensure pf is enabled
+  service: name=pf enabled=yes
+
 - name: set install url
   copy:
     content: "https://ftp.openbsd.org/pub/OpenBSD"

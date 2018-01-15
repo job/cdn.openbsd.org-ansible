@@ -20,3 +20,5 @@ ntp:
     - www.bit.nl
     - www.nist.gov
     - ietf.org
+interface:
+  ext: vio0

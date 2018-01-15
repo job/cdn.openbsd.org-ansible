@@ -5,3 +5,5 @@ atr_bgp:
       ip: 173.241.129.97
     - asn: 3257
       ip: 2001:668:0:3:ffff:0:adf1:8161
+interface:
+  ext: vmx0

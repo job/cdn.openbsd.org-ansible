@@ -7,3 +7,5 @@ atr_bgp:
     - asn: 2603
       ip: 2001:948:0:bad:c0de::1
       multihop: 10
+interface:
+  ext: em0
