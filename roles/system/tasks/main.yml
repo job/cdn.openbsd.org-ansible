@@ -11,7 +11,7 @@
 
 - name: set install url
   copy:
-    content: "https://ftp.openbsd.org/pub/OpenBSD"
+    content: "https://ftp.openbsd.org/pub/OpenBSD\n"
     dest: /etc/installurl
     mode: 0644
 
