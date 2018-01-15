@@ -1,4 +1,6 @@
 description "loopback"
-inet 67.221.245.0 255.255.255.255 NONE
-inet6 alias 2607:fae0:245:: 128
+inet 67.221.245.0 255.255.255.255 NONE		# cdn.openbsd.org
+inet6 alias 2607:fae0:245:: 128			# cdn.openbsd.org
+inet alias 67.221.245.1 255.255.255.255 NONE	# firmware.openbsd.org
+inet6 alias 2607:fae0:245::1 128		# firmware.openbsd.org
 up
