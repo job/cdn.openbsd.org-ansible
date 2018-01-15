@@ -1,0 +1,25 @@
+- name: set install url
+  copy:
+    content: "https://ftp.openbsd.org/pub/OpenBSD"
+    dest: /etc/installurl
+    mode: 0644
+
+- name: copy ntpd.conf
+  template:
+    src: ntpd.conf.j2
+    dest: "/etc/ntpd.conf"
+    owner: root
+    group: wheel
+    mode: 0644
+  notify: restart ntpd
+   
+- name: ntpd rc flags
+  lineinfile:
+    dest: /etc/rc.conf.local
+    regexp: "^ntpd_flags="
+    line: 'ntpd_flags="-s"'
+    create: yes
+  notify: restart ntpd
+
+- name: start ntpd
+  service: name=ntpd state=started

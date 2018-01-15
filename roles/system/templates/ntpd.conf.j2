@@ -1,0 +1,7 @@
+{% for server in ntp['servers'] %}
+server {{ server }}
+{% endfor %}
+
+{% for constraint in ntp['constraints'] %}
+constraint from {{ constraint }}
+{% endfor %}
