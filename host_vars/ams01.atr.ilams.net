@@ -9,3 +9,14 @@ atr_bgp:
       ip: 2001:728:1808::1
     - asn: 15562
       ip: 2001:728:1808::2
+ntp:
+  servers:
+    - 2600:3c02::13:220
+    - 2404:cc80:220::220
+    - 2001:41d0:8:188d::16
+    - 2001:638:502:137:21b:78ff:fe77:c6ec
+  constraints:
+    - nlnog.net
+    - www.bit.nl
+    - www.nist.gov
+    - ietf.org
