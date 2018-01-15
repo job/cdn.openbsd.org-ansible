@@ -1,0 +1,10 @@
+ansible_host: 204.130.133.182
+atr_bgp:
+  upstream: 20c
+  neighbors:
+    - asn: 63311
+      ip: 204.130.133.129
+    - asn: 63311
+      ip: 2607:fae0:f202:44c::1
+interface:
+  ext: vio0
