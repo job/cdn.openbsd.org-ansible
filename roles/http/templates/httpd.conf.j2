@@ -1,6 +1,6 @@
 server "cdn.openbsd.org" {
-        listen on * port 80
-        listen on :: port 80
+        listen on 67.221.245.0 port 80
+        listen on 2607:fae0:245::1 port 80
 
         location "/.well-known/acme-challenge/*" {
 {% if inventory_hostname == "ams01.atr.ilams.net" %}
@@ -16,8 +16,8 @@ server "cdn.openbsd.org" {
 }
 
 server "cdn.openbsd.org" {
-        listen on * tls port 443
-        listen on :: tls port 443
+        listen on 67.221.245.0 tls port 443
+        listen on 2607:fae0:245::1 tls port 443
 
         tls certificate "/etc/ssl/cdn.openbsd.org.fullchain.pem"
         tls key "/etc/ssl/private/cdn.openbsd.org.key"
