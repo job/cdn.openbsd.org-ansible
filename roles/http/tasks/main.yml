@@ -75,6 +75,19 @@
   notify:
     - restart httpd
 
+- name: install rsync
+  openbsd_pkg: name=rsync-3.1.2p0 state=latest
+
+- name: sync firmware
+  shell: "rsync -a rsync://junkpile.org/firmware/ /var/www/firmware/"
+
+- name: "ensure firmware sync cronjob exists"
+  cron:
+    name: "sync_firmware"
+    job: "rsync -a rsync://junkpile.org/firmware/ /var/www/firmware/"
+    hour: '*/2'
+    minute: '06'
+
 - name: "ensure kfcgi started"
   service: name=kfcgi enabled=yes state=started
 

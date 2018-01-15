@@ -54,3 +54,16 @@ server "cdn.openbsd.org" {
                 root "/"
         }
 }
+
+server "firmware.openbsd.org" {
+        listen on * port 80
+        listen on :: port 80
+
+        location "/" {
+            block return 302 "http://firmware.openbsd.org/firmware/"
+        }
+
+        location "/*" {
+            root "/firmware"
+        }
+}
