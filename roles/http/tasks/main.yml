@@ -76,7 +76,7 @@
     - restart httpd
 
 - name: install rsync
-  openbsd_pkg: name=rsync-3.1.2p0 state=latest
+  openbsd_pkg: name=rsync-- state=latest
 
 - name: sync firmware
   shell: "rsync -a rsync://junkpile.org/firmware/ /var/www/firmware/"
