@@ -1,8 +1,8 @@
 AS 15562
 router-id {{ ansible_default_ipv4['address'] }}
 
-listen on 127.0.0.1
-listen on ::1
+listen on 0.0.0.0
+listen on ::
 
 {% for net in bgp_networks|default([]) %}
 network {{ net }}
