@@ -15,10 +15,19 @@ neighbor {{ neighbor['ip'] }} {
 {% endif %}
 	remote-as {{ neighbor['asn'] }}
 	announce self
+{% if neighbor['routeserver']|default(False) %}
+	enforce neighbor-as no
+{% endif %}
+{% if neighbor['source_ip']|default(False) %}
+	local-address {{ neighbor['source_ip'] }}
+{% endif %}
 }
 {% endfor %}
 
 deny from any
+{% if testing|default(False) %}
+deny quick to any
+{% endif %}
 
 {# since coloclue isnt a global network, dont announce to global peers #}
 {% if atr_bgp['upstream'] == "coloclue" %}
@@ -33,3 +42,9 @@ match to any set { \
     community 65520:2201 \
 }
 {% endif %}
+
+{% for neighbor in atr_bgp['neighbors'] %}
+{% if neighbor['accept_routes']|default(False) %}
+allow from {{ neighbor['ip'] }}
+{% endif %}
+{% endfor %}

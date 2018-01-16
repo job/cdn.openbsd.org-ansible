@@ -1,0 +1,31 @@
+atr_bgp:
+  upstream: yycix
+  neighbors:
+    - asn: 53339
+      ip: 206.126.225.253
+      routeserver: True
+      source_ip: 206.126.225.42
+      accept_routes: True
+    - asn: 53339
+      ip: 206.126.225.254
+      routeserver: True
+      source_ip: 206.126.225.42
+      accept_routes: True
+    - asn: 53339
+      ip: 2001:504:2f::5:3339:253
+      routeserver: True
+      source_ip: 2001:504:2f::1:5562:1
+      accept_routes: True
+    - asn: 53339
+      ip: 2001:504:2f::5:3339:254
+      routeserver: True
+      source_ip: 2001:504:2f::1:5562:1
+      accept_routes: True
+    - asn: 21570
+      ip: 206.126.225.31
+      accept_routes: True
+    - asn: 21570
+      ip: 2001:504:2f::2:1570:1
+      accept_routes: True
+interface:
+  ext: '{ em1 em2 }'
