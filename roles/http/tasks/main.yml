@@ -79,12 +79,12 @@
   openbsd_pkg: name=rsync-- state=latest
 
 - name: sync firmware
-  shell: "rsync -a rsync://junkpile.org/firmware/ /var/www/firmware/"
+  shell: 'sleep $((RANDOM % 30)) && rsync -a rsync://junkpile.org/firmware/ /var/www/firmware/'
 
 - name: "ensure firmware sync cronjob exists"
   cron:
     name: "sync_firmware"
-    job: "rsync -a rsync://junkpile.org/firmware/ /var/www/firmware/"
+    job: 'sleep $((RANDOM \% 2048)) && rsync -a rsync://junkpile.org/firmware/ /var/www/firmware/'
     hour: '*/2'
     minute: '06'
 
