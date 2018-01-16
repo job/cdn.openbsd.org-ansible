@@ -15,6 +15,12 @@
     dest: /etc/installurl
     mode: 0644
 
+- name: forward root mail to job
+  copy:
+    content: "job@instituut.net\n"
+    dest: /root/.forward
+    mode: 0644
+
 - name: copy ntpd.conf
   template:
     src: ntpd.conf.j2

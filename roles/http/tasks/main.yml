@@ -84,7 +84,7 @@
 - name: "ensure firmware sync cronjob exists"
   cron:
     name: "sync_firmware"
-    job: 'sleep $((RANDOM \% 2048)) && rsync -a rsync://junkpile.org/firmware/ /var/www/firmware/'
+    job: 'sleep $((RANDOM \% 2048)) && /usr/local/bin/rsync -a rsync://junkpile.org/firmware/ /var/www/firmware/'
     hour: '*/2'
     minute: '06'
 
