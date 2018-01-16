@@ -62,6 +62,7 @@
   cron:
     name: "shuffle_cdns"
     job: "/usr/local/bin/check_mirrors"
+  when: inventory_hostname != "yyc01.atr.ilams.net"
 
 - name: Copy across httpd config
   template:
