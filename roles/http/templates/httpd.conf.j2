@@ -22,11 +22,6 @@ server "cdn.openbsd.org" {
         tls certificate "/etc/ssl/cdn.openbsd.org.fullchain.pem"
         tls key "/etc/ssl/private/cdn.openbsd.org.key"
 
-        log {
-                access "secure-access.log"
-                error "secure-error.log"
-        }
-
         location "/.well-known/acme-challenge/*" {
 {% if inventory_hostname == "ams01.atr.ilams.net" %}
                 root "/acme"
