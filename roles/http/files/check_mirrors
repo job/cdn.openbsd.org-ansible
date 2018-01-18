@@ -9,4 +9,6 @@ done > /var/www/htdocs/index.txt.tmp
 if [ "$(sort /var/www/htdocs/index.txt.tmp)" != "$(sort /var/www/htdocs/index.txt)" ]; then
     mv /var/www/htdocs/index.txt.tmp /var/www/htdocs/index.txt
     pkill -SIGHUP kfcgi
+else
+    rm /var/www/htdocs/index.txt.tmp
 fi
