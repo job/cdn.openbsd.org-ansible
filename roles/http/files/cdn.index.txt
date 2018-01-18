@@ -1,4 +1,4 @@
-//fastly.cdn.openbsd.org/pub/OpenBSD
-//mirror.leaseweb.com/pub/OpenBSD
-//cloudflare.cdn.openbsd.org/pub/OpenBSD
-//mirror.vdms.io/pub/OpenBSD
+https://fastly.cdn.openbsd.org/pub/OpenBSD
+https://mirror.leaseweb.com/pub/OpenBSD
+https://cloudflare.cdn.openbsd.org/pub/OpenBSD
+https://mirror.vdms.io/pub/OpenBSD

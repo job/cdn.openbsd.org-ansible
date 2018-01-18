@@ -3,18 +3,10 @@
 set -e
 
 for i in $(sort -R /var/www/htdocs/cdn.index.txt); do
-    url=http:${i}/timestamp
-    ftp -w 5 -MVo /dev/zero ${url} && echo ${url} || echo ${url} >&2
-done > /var/www/htdocs/index.http.txt.tmp
-
-for i in $(sort -R /var/www/htdocs/cdn.index.txt); do
-    url=https:${i}/timestamp
-    ftp -w 5 -MVo /dev/zero ${url} && echo ${url} || echo ${url} >&2
-done > /var/www/htdocs/index.https.txt.tmp
-
+    ftp -w 5 -MVo /dev/zero $i/timestamp && echo $i || echo $i >&2
+done > /var/www/htdocs/index.txt.tmp
 
 if [ "$(sort /var/www/htdocs/index.txt.tmp)" != "$(sort /var/www/htdocs/index.txt)" ]; then
-    mv /var/www/htdocs/index.http.txt.tmp /var/www/htdocs/index.http.txt
-    mv /var/www/htdocs/index.https.txt.tmp /var/www/htdocs/index.https.txt
+    mv /var/www/htdocs/index.txt.tmp /var/www/htdocs/index.txt
     pkill -SIGHUP kfcgi
 fi
