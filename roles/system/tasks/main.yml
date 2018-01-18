@@ -1,3 +1,11 @@
+- name: set hostname
+  copy:
+    content: "{{ inventory_hostname }}\n"
+    dest: /etc/myname
+    mode: 0644
+    owner: root
+    group: wheel
+
 - name: "upload pf rules"
   template:
     src: pf.conf.j2
