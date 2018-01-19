@@ -10,9 +10,17 @@ server "cdn.openbsd.org" {
                 block return 301 "http://ams01.atr.ilams.net$REQUEST_URI"
 {% endif %}
         }
-        location "/*" {
-                block return 301 "https://cdn.openbsd.org$REQUEST_URI"
+        location "/pub/OpenBSD" {
+                root strip 2
+                fastcgi socket "/run/httpd.sock"
+                root "/"
         }
+        location "/pub/OpenBSD/*" {
+                root strip 2
+                fastcgi socket "/run/httpd.sock"
+                root "/"
+        }
+
 }
 
 server "cdn.openbsd.org" {
