@@ -10,5 +10,5 @@ if [ "$(sort /var/www/htdocs/index.txt.tmp)" != "$(sort /var/www/htdocs/index.tx
     mv /var/www/htdocs/index.txt.tmp /var/www/htdocs/index.txt
     pkill -SIGHUP kfcgi
 else
-    rm /var/www/htdocs/index.txt.tmp
+    mv /var/www/htdocs/index.txt.tmp /var/www/htdocs/index.txt
 fi
