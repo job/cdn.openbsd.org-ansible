@@ -1,0 +1,13 @@
+atr_bgp:
+  upstream: warnock
+  neighbors:
+    - asn: 56178
+      ip: 203.30.57.253
+    - asn: 56178
+      ip: 203.30.57.254
+    - asn: 56178
+      ip: 2403:9000:1000::1:1
+    - asn: 56178
+      ip: 2403:9000:1000::1:2
+interface:
+ ext: em0
