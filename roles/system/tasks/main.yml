@@ -6,6 +6,13 @@
     owner: root
     group: wheel
 
+- name: set timezone
+  file:
+    state: link
+    src: /usr/share/zoneinfo/Etc/UTC
+    path: /etc/localtime
+    force: yes
+
 - name: "upload pf rules"
   template:
     src: pf.conf.j2
