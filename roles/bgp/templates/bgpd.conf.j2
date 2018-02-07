@@ -15,6 +15,7 @@ neighbor {{ neighbor['ip'] }} {
 {% endif %}
 	remote-as {{ neighbor['asn'] }}
 	announce self
+	announce restart no
 {% if neighbor['routeserver']|default(False) %}
 	enforce neighbor-as no
 {% endif %}
