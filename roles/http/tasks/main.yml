@@ -61,7 +61,7 @@
 - name: cdn index shuffle job
   cron:
     name: "shuffle_cdns"
-    job: "/usr/local/bin/check_mirrors 2>&1 >/dev/zero"
+    job: "/usr/local/bin/check_mirrors 2>/dev/zero >/dev/zero"
   when: inventory_hostname != "yyc01.atr.ilams.net"
 
 - name: Copy across httpd config

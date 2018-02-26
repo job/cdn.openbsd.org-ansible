@@ -1,7 +1,7 @@
 #!/bin/sh
 
 for i in $(sort -R /var/www/htdocs/cdn.index.txt); do
-    ftp -w 5 -MVo /dev/zero https://$i/timestamp && echo $i || echo $i >&2
+    ftp -w 5 -MVo /dev/zero https://$i/timestamp 2>/dev/zero && echo $i || echo $i >&2
 done > /var/www/htdocs/index.txt.tmp
 
 if [ "$(sort /var/www/htdocs/index.txt.tmp)" != "$(sort /var/www/htdocs/index.txt)" ]; then
