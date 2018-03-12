@@ -6,7 +6,6 @@
     group: wheel
     mode: 0600
     validate: /usr/sbin/bgpd -n -f %s
-    backup: yes
   notify:
     - reload bgpd
 

@@ -72,7 +72,6 @@
     group: wheel
     mode: 0600
     validate: /usr/sbin/httpd -n -f %s
-    backup: yes
   notify:
     - restart httpd
 
