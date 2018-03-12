@@ -1,0 +1,23 @@
+- name: Copy across acme-client config
+  copy:
+    src: acme-client.conf
+    dest: /etc/acme-client.conf
+    owner: root
+    group: wheel
+    mode: 0600
+
+- name: cron tls ams01.atr.ilams.net
+  cron:
+    name: "refresh_ams01_tls"
+    minute: 04
+    hour: 05
+    day: 02
+    job: "acme-client -vF ams01.atr.ilams.net"
+
+- name: cron tls cdn.openbsd.org
+  cron:
+    name: "refresh_cdn_tls"
+    minute: 04
+    hour: 06
+    day: 02
+    job: "acme-client -vF cdn.openbsd.org"

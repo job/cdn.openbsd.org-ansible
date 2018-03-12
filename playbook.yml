@@ -6,3 +6,4 @@
     - { role: ssh, tags: ssh }
     - { role: http, tags: http }
     - { role: bgp, tags: bgp }
+    - { role: tls, when: inventory_hostname == "ams01.atr.ilams.net", tags: tls }
