@@ -15,3 +15,10 @@ pass in proto tcp to {{ interface['ext'] }} port 179 # BGP
 
 pass in proto tcp to $atr port 80  # HTTP
 pass in proto tcp to $atr port 443 # HTTPS
+
+{% if inventory_hostname == "ams01.atr.ilams.net" %}
+pass in proto tcp to 165.254.255.23 port 80
+pass in proto tcp to 165.254.255.23 port 443
+pass in proto tcp to 2001:728:1808::b port 80
+pass in proto tcp to 2001:728:1808::b port 443
+{% endif %}
