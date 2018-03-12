@@ -8,6 +8,19 @@ server "ams01.atr.ilams.net" {
         }
 }
 
+server "ams01.atr.ilams.net" {
+        listen on 165.254.255.23 tls port 443
+        listen on 2001:728:1808::b tls port 443
+
+        tls certificate "/etc/ssl/ams01.atr.ilams.net.fullchain.pem"
+        tls key "/etc/ssl/private/ams01.atr.ilams.net.key"
+
+        location "/.well-known/acme-challenge/*" {
+                root "/acme"
+                root strip 2
+        }
+}
+
 {% endif %}
 server "cdn.openbsd.org" {
         listen on 67.221.245.0 port 80
@@ -18,7 +31,7 @@ server "cdn.openbsd.org" {
                 root "/acme"
                 root strip 2
 {% else %}
-                block return 301 "http://ams01.atr.ilams.net$REQUEST_URI"
+                block return 301 "https://ams01.atr.ilams.net$REQUEST_URI"
 {% endif %}
         }
         location "/" {
@@ -50,7 +63,7 @@ server "cdn.openbsd.org" {
                 root "/acme"
                 root strip 2
 {% else %}
-                block return 301 "http://ams01.atr.ilams.net$REQUEST_URI"
+                block return 301 "https://ams01.atr.ilams.net$REQUEST_URI"
 {% endif %}
         }
 
