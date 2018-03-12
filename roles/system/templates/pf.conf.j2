@@ -5,8 +5,8 @@ set skip on lo
 
 block
 
-pass all flags S/SA
-pass in quick inet6 from fe80::/64
+pass out all flags S/SA
+pass quick inet6 from fe80::/64
 
 pass in proto tcp from {{ munin['host'] }} to {{ interface['ext'] }} port 4949
 
