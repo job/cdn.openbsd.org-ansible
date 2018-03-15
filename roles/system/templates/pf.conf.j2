@@ -5,6 +5,9 @@ set skip on lo
 
 block
 
+pass inet proto icmp all icmp-type echoreq
+pass inet6 proto icmp6 all icmp6-type echoreq
+
 pass out all flags S/SA
 pass quick inet6 from fe80::/64
 
