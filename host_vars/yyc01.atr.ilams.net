@@ -27,5 +27,11 @@ atr_bgp:
     - asn: 21570
       ip: 2001:504:2f::2:1570:1
       accept_routes: True
+    - asn: 13335
+      ip: 206.126.225.41
+      accept_routes: True
+    - asn: 13335
+      ip: 2001:504:2f::1:3335:1
+      accept_routes: True
 interface:
   ext: '{ em1 em2 }'
