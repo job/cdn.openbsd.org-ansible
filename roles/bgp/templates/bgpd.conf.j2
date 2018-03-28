@@ -42,6 +42,15 @@ match to any set { \
 match to any set { \
     community 65520:2201 \
 }
+{% elif atr_bgp['upstream'] == "nordunet" %}
+match to any set { \
+    community 2603:63809 \
+    community 2603:63810 \
+    community 2603:63854 \
+    community 2603:63811 \
+    community 2603:63812 \
+    community 2603:63808 \
+}
 {% endif %}
 
 {% for neighbor in atr_bgp['neighbors'] %}
