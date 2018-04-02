@@ -1,0 +1,114 @@
+- hosts: all
+  become: true
+  become_user: root
+  gather_facts: True
+  tasks:
+    - block:
+
+      - name: "rm -rf /usr/share/man"
+        command: 'rm -rf /usr/share/man'
+        args:
+          warn: no
+      - name: "clear out /usr/rel/*"
+        command: 'rm -rf /usr/rel'
+        args:
+          warn: no
+      - name: "mkdir /usr/rel"
+        command: 'mkdir /usr/rel'
+        args:
+          warn: no
+      - name: "download new release files"
+        command: "ftp http://fastly.cdn.openbsd.org/pub/OpenBSD/6.3/{{ ansible_architecture }}/{{ item}}"
+        args:
+          chdir: "/usr/rel"
+        with_items:
+          - "SHA256"
+          - "SHA256.sig"
+          - "base63.tgz"
+          - "bsd"
+          - "bsd.mp"
+          - "bsd.rd"
+          - "comp63.tgz"
+          - "game63.tgz"
+          - "index.txt"
+          - "man63.tgz"
+          - "xbase63.tgz"
+          - "xfont63.tgz"
+          - "xserv63.tgz"
+          - "xshare63.tgz"
+      - name: "install MP kernel"
+        shell: |
+          cd /usr/rel && ln -f /bsd /obsd && cp bsd.mp /nbsd && mv /nbsd /bsd
+        when:
+          - ansible_architecture == "amd64"
+      - name: "install SP kernel"
+        shell: |
+          cd /usr/rel && ln -f /bsd /obsd && cp bsd /nbsd && mv /nbsd /bsd
+        when:
+          - ansible_architecture == "i386"
+      - name: "cp bsd.rd /"
+        command: "cp bsd.rd /"
+        args:
+          chdir: "/usr/rel"
+      - name: "cp bsd /bsd.sp"
+        command: "cp bsd /bsd.sp"
+        args:
+          chdir: "/usr/rel"
+        when:
+          - ansible_architecture == "amd64"
+      - name: "cp bsd.mp /bsd.mp"
+        command: "cp bsd.mp /bsd.mp"
+        args:
+          chdir: "/usr/rel"
+        when:
+          - ansible_architecture == "i385"
+      - name: "enable KARL"
+        command: "sha256 -h /var/db/kernel.SHA256 /bsd"
+        when: ansible_distribution_version == "6.2"
+      - name: "cp /sbin/reboot /sbin/oreboot"
+        command: "cp /sbin/reboot /sbin/oreboot"
+        args:
+          chdir: "/usr/rel"
+      - name: "command {{ item }}"
+        command: "{{ item }}"
+        args:
+          chdir: "/usr/rel"
+          warn: no
+        with_items:
+          - "tar -C / -xzphf xshare63.tgz"
+          - "rm xshare63.tgz"
+          - "tar -C / -xzphf xserv63.tgz"
+          - "rm xserv63.tgz"
+          - "tar -C / -xzphf xfont63.tgz"
+          - "rm xfont63.tgz"
+          - "tar -C / -xzphf xbase63.tgz"
+          - "rm xbase63.tgz"
+          - "tar -C / -xzphf man63.tgz"
+          - "rm man63.tgz"
+          - "tar -C / -xzphf game63.tgz"
+          - "rm game63.tgz"
+          - "tar -C / -xzphf comp63.tgz"
+          - "rm comp63.tgz"
+          - "tar -C / -xzphf base63.tgz"
+          - "rm base63.tgz"
+      - name: "reboot"
+        command: "/sbin/oreboot"
+
+      when: ansible_distribution_version == "6.2"
+
+    - block: 
+
+      - name: "MAKEDEV"
+        command: "./MAKEDEV all"
+        args:
+          chdir: "/dev"
+      - name: "sysmerge -b"
+        command: "sysmerge -b"
+      - name: "fw_update"
+        command: "fw_update"
+      - name: "pkg_add -u"
+        command: "pkg_add -u"
+      - name: "reboot"
+        command: "/sbin/reboot"
+
+      when: ansible_distribution_version == "6.3"
