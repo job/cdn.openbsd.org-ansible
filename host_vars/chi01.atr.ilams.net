@@ -1,5 +1,6 @@
 ansible_host: 204.130.133.182
 atr_bgp:
+  router_id: 204.130.133.182
   upstream: 20c
   neighbors:
     - asn: 63311

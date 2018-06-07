@@ -1,4 +1,5 @@
 atr_bgp:
+  router_id: 165.254.255.150
   upstream: ntt
   neighbors:
     - asn: 15562

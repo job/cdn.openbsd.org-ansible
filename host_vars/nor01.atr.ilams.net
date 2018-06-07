@@ -1,4 +1,5 @@
 atr_bgp:
+  router_id: 194.68.13.80
   upstream: nordunet
   neighbors:
     - asn: 2603

@@ -1,5 +1,5 @@
 AS 15562
-router-id {{ ansible_default_ipv4['address'] }}
+router-id {{ atr_bgp['router_id'] }}
 
 listen on 0.0.0.0
 listen on ::
@@ -7,6 +7,10 @@ listen on ::
 {% for net in bgp_networks|default([]) %}
 network {{ net }} set large-community 15562:1:1
 {% endfor %}
+
+prefix-set atr-prefixes { {% for net in bgp_networks|default([]) -%}
+{{ net }}{{ " " }}{%- endfor -%}
+}
 
 {% for neighbor in atr_bgp['neighbors'] %}
 neighbor {{ neighbor['ip'] }} {
@@ -28,13 +32,13 @@ neighbor {{ neighbor['ip'] }} {
 {% endfor %}
 
 deny from any
-allow to ebgp large-community 15562:1:1
+deny to any
 {% if testing|default(False) %}
 deny quick to any
 {% endif %}
 
-allow to ibgp large-community 15562:1:1
-allow to ebgp large-community 15562:1:1
+allow to ibgp large-community 15562:1:1 prefix-set atr-prefixes
+allow to ebgp large-community 15562:1:1 prefix-set atr-prefixes
 
 {# since coloclue isnt a global network, dont announce to global peers #}
 {% if atr_bgp['upstream'] == "coloclue" %}

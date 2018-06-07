@@ -1,4 +1,5 @@
 atr_bgp:
+  router_id: 199.185.178.11
   upstream: yycix
   neighbors:
     - asn: 53339

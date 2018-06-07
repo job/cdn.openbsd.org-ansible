@@ -1,4 +1,5 @@
 atr_bgp:
+  router_id: 203.30.57.50
   upstream: warnock
   neighbors:
     - asn: 56178
