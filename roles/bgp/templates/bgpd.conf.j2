@@ -5,7 +5,7 @@ listen on 0.0.0.0
 listen on ::
 
 {% for net in bgp_networks|default([]) %}
-network {{ net }}
+network {{ net }} set large-community 15562:1:1
 {% endfor %}
 
 {% for neighbor in atr_bgp['neighbors'] %}
@@ -14,7 +14,9 @@ neighbor {{ neighbor['ip'] }} {
 	multihop {{ neighbor['multihop'] }}
 {% endif %}
 	remote-as {{ neighbor['asn'] }}
-	announce self
+{% if ansible_distribution_version != "6.4" %}
+	announce all
+{% endif %}
 	announce restart no
 {% if neighbor['routeserver']|default(False) %}
 	enforce neighbor-as no
@@ -26,9 +28,13 @@ neighbor {{ neighbor['ip'] }} {
 {% endfor %}
 
 deny from any
+allow to ebgp large-community 15562:1:1
 {% if testing|default(False) %}
 deny quick to any
 {% endif %}
+
+allow to ibgp large-community 15562:1:1
+allow to ebgp large-community 15562:1:1
 
 {# since coloclue isnt a global network, dont announce to global peers #}
 {% if atr_bgp['upstream'] == "coloclue" %}
