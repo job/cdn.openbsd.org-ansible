@@ -3,7 +3,7 @@ atr = "{{ "{ " }}{%- for i in bgp_networks -%}{{ i }}{{ " " }}{%- endfor -%} }"
 set block-policy drop
 set skip on lo
 
-block
+block log
 
 pass inet proto icmp all icmp-type echoreq
 pass inet6 proto icmp6 all icmp6-type echoreq
@@ -11,10 +11,14 @@ pass inet6 proto icmp6 all icmp6-type echoreq
 pass out all flags S/SA
 pass quick inet6 from fe80::/64
 
+{% for neighbor in atr_bgp['neighbors'] %}
+pass in from {{ neighbor['ip'] }}
+{% endfor %}
+
 pass in proto tcp from {{ munin['host'] }} to {{ interface['ext'] }} port 4949
 
-pass in proto tcp to {{ interface['ext'] }} port 22 # SSH
-pass in proto tcp to {{ interface['ext'] }} port 179 # BGP
+pass in proto tcp from any to port 22 # SSH
+block in proto tcp from any to $atr port 22 # block ssh to cdn.openbsd.org
 
 pass in proto tcp to {{ interface['ext'] }} port 80 # HTTP
 pass in proto tcp to {{ interface['ext'] }} port 443 # HTTPS
