@@ -19,6 +19,8 @@
     - "{{ hostvars['ams01.atr.ilams.net']['le_certs'].results }}"
   when: inventory_hostname != "ams01.atr.ilams.net"
   no_log: True
+  notify:
+    - restart httpd
 
 - name: "copy cdn index"
   copy:
