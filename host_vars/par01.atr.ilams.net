@@ -1,0 +1,14 @@
+atr_bgp:
+  router_id: 193.106.119.59
+  upstream: hivane
+  neighbors:
+    - asn: 34019
+      ip: 193.106.119.61
+    - asn: 34019
+      ip: 2001:67c:1740:9008::c16a:773d
+    - asn: 34019
+      ip: 193.106.119.60
+    - asn: 34019
+      ip: 2001:67c:1740:9008::c16a:773c
+interface:
+  ext: vio0
