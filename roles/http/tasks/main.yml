@@ -11,14 +11,14 @@
 - name: write out letencrypt certs
   copy:
     dest: "{{ item.item }}"
-    content: "{{ item.content | b64decode }}"
+    content: "{{ item['content'] | b64decode }}"
     owner: root
     group: wheel
     mode: 0700
   with_items:
     - "{{ hostvars['ams01.atr.ilams.net']['le_certs'].results }}"
   when: inventory_hostname != "ams01.atr.ilams.net"
-  no_log: True
+  no_log: False
   notify:
     - restart httpd
 

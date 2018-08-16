@@ -40,5 +40,13 @@ atr_bgp:
     - asn: 5645
       ip: 2001:504:2f::5645:1
       accept_routes: True
+    - asn: 42
+      ip: 206.126.225.16
+    - asn: 42
+      ip: 2001:504:2f::42:1
+    - asn: 3856
+      ip: 206.126.225.17
+    - asn: 3856
+      ip: 2001:504:2f::3856:1
 interface:
   ext: '{ em1 em2 }'
