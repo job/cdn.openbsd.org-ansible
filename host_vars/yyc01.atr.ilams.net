@@ -22,11 +22,11 @@ atr_bgp:
       routeserver: True
       source_ip: 2001:504:2f::1:5562:1
       accept_routes: True
-    - asn: 21570
-      ip: 206.126.225.31
+    - asn: 3257
+      ip: 206.126.225.26
       accept_routes: True
-    - asn: 21570
-      ip: 2001:504:2f::2:1570:1
+    - asn: 3257
+      ip: 2001:504:2f::3257:1
       accept_routes: True
     - asn: 13335
       ip: 206.126.225.41
