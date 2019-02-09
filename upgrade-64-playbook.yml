@@ -1,0 +1,123 @@
+- hosts: all
+  become: true
+  become_user: root
+  gather_facts: True
+  tasks:
+    - block:
+
+      - name: "delete old files"
+        command: "rm -f {{ item }}"
+        with_items:
+          - '/dev/audioctl'
+          - '/etc/rc.d/rtadvd'
+          - '/usr/sbin/rtadvd'
+          - '/usr/share/man/man5/rtadvd.conf.5'
+          - '/usr/share/man/man8/rtadvd.8'
+          - '/usr/X11R6/lib/libxcb-xevie.*'
+          - '/usr/X11R6/lib/libxcb-xprint.*'
+          - '/usr/X11R6/lib/pkgconfig/xcb-xevie.pc'
+          - '/usr/X11R6/lib/pkgconfig/xcb-xprint.pc'
+        args:
+          warn: no
+      - name: "clear out /usr/rel/*"
+        command: 'rm -rf /usr/rel'
+        args:
+          warn: no
+      - name: "mkdir /usr/rel"
+        command: 'mkdir /usr/rel'
+        args:
+          warn: no
+      - name: "download new release files"
+        command: "ftp http://cdn.openbsd.org/pub/OpenBSD/6.4/{{ ansible_architecture }}/{{ item}}"
+        args:
+          chdir: "/usr/rel"
+        with_items:
+          - "SHA256"
+          - "SHA256.sig"
+          - "base64.tgz"
+          - "bsd"
+          - "bsd.mp"
+          - "bsd.rd"
+          - "comp64.tgz"
+          - "game64.tgz"
+          - "index.txt"
+          - "man64.tgz"
+          - "xbase64.tgz"
+          - "xfont64.tgz"
+          - "xserv64.tgz"
+          - "xshare64.tgz"
+      - name: "install MP kernel"
+        shell: |
+          cd /usr/rel && ln -f /bsd /obsd && cp bsd.mp /nbsd && mv /nbsd /bsd
+        when:
+          - ansible_architecture == "amd64"
+      - name: "install SP kernel"
+        shell: |
+          cd /usr/rel && ln -f /bsd /obsd && cp bsd /nbsd && mv /nbsd /bsd
+        when:
+          - ansible_architecture == "i386"
+      - name: "cp bsd.rd /"
+        command: "cp bsd.rd /"
+        args:
+          chdir: "/usr/rel"
+      - name: "cp bsd /bsd.sp"
+        command: "cp bsd /bsd.sp"
+        args:
+          chdir: "/usr/rel"
+        when:
+          - ansible_architecture == "amd64"
+      - name: "cp bsd.mp /bsd.mp"
+        command: "cp bsd.mp /bsd.mp"
+        args:
+          chdir: "/usr/rel"
+        when:
+          - ansible_architecture == "i385"
+      - name: "cp /sbin/reboot /sbin/oreboot"
+        command: "cp /sbin/reboot /sbin/oreboot"
+        args:
+          chdir: "/usr/rel"
+      - name: "command {{ item }}"
+        command: "{{ item }}"
+        args:
+          chdir: "/usr/rel"
+          warn: no
+        with_items:
+          - "tar -C / -xzphf xshare64.tgz"
+          - "rm xshare64.tgz"
+          - "tar -C / -xzphf xserv64.tgz"
+          - "rm xserv64.tgz"
+          - "tar -C / -xzphf xfont64.tgz"
+          - "rm xfont64.tgz"
+          - "tar -C / -xzphf xbase64.tgz"
+          - "rm xbase64.tgz"
+          - "tar -C / -xzphf man64.tgz"
+          - "rm man64.tgz"
+          - "tar -C / -xzphf game64.tgz"
+          - "rm game64.tgz"
+          - "tar -C / -xzphf comp64.tgz"
+          - "rm comp64.tgz"
+          - "tar -C / -xzphf base64.tgz"
+          - "rm base64.tgz"
+      - name: "reboot"
+        command: "/sbin/oreboot"
+
+      when: ansible_distribution_version == "6.3"
+
+    - block: 
+
+      - name: "MAKEDEV"
+        command: "./MAKEDEV all"
+        args:
+          chdir: "/dev"
+      - name: "sysmerge -b"
+        command: "sysmerge -b"
+      - name: "fw_update"
+        command: "fw_update"
+      - name: "pkg_add -u"
+        command: "pkg_add -u"
+      - name: "syspatch"
+        command: "syspatch"
+      - name: "reboot"
+        command: "/sbin/reboot"
+
+      when: ansible_distribution_version == "6.4"

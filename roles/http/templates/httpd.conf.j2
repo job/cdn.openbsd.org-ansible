@@ -4,7 +4,7 @@ server "ams01.atr.ilams.net" {
         listen on 2001:728:1808::b port 80
         location "/.well-known/acme-challenge/*" {
                 root "/acme"
-                root strip 2
+                request strip 2
         }
 }
 
@@ -17,7 +17,7 @@ server "ams01.atr.ilams.net" {
 
         location "/.well-known/acme-challenge/*" {
                 root "/acme"
-                root strip 2
+                request strip 2
         }
 }
 
@@ -29,7 +29,7 @@ server "cdn.openbsd.org" {
         location "/.well-known/acme-challenge/*" {
 {% if inventory_hostname == "ams01.atr.ilams.net" %}
                 root "/acme"
-                root strip 2
+                request strip 2
 {% else %}
                 block return 301 "https://ams01.atr.ilams.net$REQUEST_URI"
 {% endif %}
@@ -39,12 +39,12 @@ server "cdn.openbsd.org" {
             root "/htdocs"
         }
         location "/pub/OpenBSD" {
-                root strip 2
+                request strip 2
                 fastcgi socket "/run/httpd.sock"
                 root "/"
         }
         location "/pub/OpenBSD/*" {
-                root strip 2
+                request strip 2
                 fastcgi socket "/run/httpd.sock"
                 root "/"
         }
@@ -61,7 +61,7 @@ server "cdn.openbsd.org" {
         location "/.well-known/acme-challenge/*" {
 {% if inventory_hostname == "ams01.atr.ilams.net" %}
                 root "/acme"
-                root strip 2
+                request strip 2
 {% else %}
                 block return 301 "https://ams01.atr.ilams.net$REQUEST_URI"
 {% endif %}
@@ -75,12 +75,12 @@ server "cdn.openbsd.org" {
         }
 
         location "/pub/OpenBSD" {
-                root strip 2
+                request strip 2
                 fastcgi socket "/run/httpd.sock"
                 root "/"
         }
         location "/pub/OpenBSD/*" {
-                root strip 2
+                request strip 2
                 fastcgi socket "/run/httpd.sock"
                 root "/"
         }
